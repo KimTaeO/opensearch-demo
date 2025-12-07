@@ -6,3 +6,5 @@ opensearch:
   protocol: http
   host: localhost
   port: 9200
+  username: admin
+  password: Asdf12345678!

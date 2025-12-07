@@ -23,7 +23,7 @@ class OpenSearchConfig(
         val credentialsProvider = BasicCredentialsProvider()
         credentialsProvider.setCredentials(
             AuthScope(httpHost),
-            UsernamePasswordCredentials("admin", "Asdf12345678!".toCharArray())
+            UsernamePasswordCredentials(openSearchProperties.username, openSearchProperties.password.toCharArray())
         )
         val opensearchTransport =
             ApacheHttpClient5TransportBuilder

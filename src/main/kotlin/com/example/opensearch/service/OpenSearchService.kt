@@ -6,6 +6,7 @@ import org.opensearch.client.opensearch._types.mapping.KeywordProperty
 import org.opensearch.client.opensearch._types.mapping.Property
 import org.opensearch.client.opensearch._types.mapping.TypeMapping
 import org.opensearch.client.opensearch.indices.CreateIndexRequest
+import org.opensearch.client.opensearch.indices.ExistsRequest
 import org.opensearch.client.opensearch.indices.IndexSettings
 import org.springframework.stereotype.Service
 
@@ -37,5 +38,15 @@ class OpenSearchService(
             .build()
 
         openSearchConfig.openSearchClient().indices().create(req)
+    }
+
+    fun isIndexExist(indexName: String): Boolean {
+        val req = ExistsRequest
+            .Builder()
+            .index(indexName)
+            .build()
+
+        val res = openSearchConfig.openSearchClient().indices().exists(req)
+        return res.value()
     }
 }

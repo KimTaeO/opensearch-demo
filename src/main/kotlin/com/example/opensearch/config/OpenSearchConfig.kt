@@ -10,6 +10,7 @@ import org.apache.hc.core5.http2.HttpVersionPolicy
 import org.opensearch.client.json.jackson.JacksonJsonpMapper
 import org.opensearch.client.opensearch.OpenSearchClient
 import org.opensearch.client.transport.httpclient5.ApacheHttpClient5TransportBuilder
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration
 class OpenSearchConfig(
     private val openSearchProperties: OpenSearchProperties
 ) {
+    @Bean
     fun openSearchClient(): OpenSearchClient {
         val httpHost = HttpHost(openSearchProperties.protocol, openSearchProperties.host, openSearchProperties.port)
 

@@ -12,7 +12,7 @@ import org.opensearch.client.opensearch.indices.IndexSettings
 import org.springframework.stereotype.Service
 
 @Service
-class OpenSearchService(
+class OpenSearchIndexService(
     private val openSearchConfig: OpenSearchConfig
 ) {
     fun createIndex() {

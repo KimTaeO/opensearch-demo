@@ -1,6 +1,6 @@
 package com.example.opensearch.service
 
-import com.example.opensearch.config.OpenSearchConfig
+import org.opensearch.client.opensearch.OpenSearchClient
 import org.opensearch.client.opensearch._types.mapping.IntegerNumberProperty
 import org.opensearch.client.opensearch._types.mapping.KeywordProperty
 import org.opensearch.client.opensearch._types.mapping.Property
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class OpenSearchIndexService(
-    private val openSearchConfig: OpenSearchConfig
+    private val openSearchClient: OpenSearchClient
 ) {
     fun createIndex() {
         val indexName = "index"
@@ -38,7 +38,7 @@ class OpenSearchIndexService(
             .mappings(typeMapping)
             .build()
 
-        openSearchConfig.openSearchClient().indices().create(req)
+        openSearchClient.indices().create(req)
     }
 
     fun isIndexExist(indexName: String): Boolean {
@@ -47,7 +47,7 @@ class OpenSearchIndexService(
             .index(indexName)
             .build()
 
-        val res = openSearchConfig.openSearchClient().indices().exists(req)
+        val res = openSearchClient.indices().exists(req)
         return res.value()
     }
 
@@ -56,6 +56,6 @@ class OpenSearchIndexService(
             .Builder()
             .index(indexName).build()
 
-        openSearchConfig.openSearchClient().indices().delete(req)
+        openSearchClient.indices().delete(req)
     }
 }

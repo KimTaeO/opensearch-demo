@@ -3,6 +3,7 @@ package com.example.opensearch.controller
 import com.example.opensearch.service.OpenSearchService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,5 +25,11 @@ class OpenSearchController(
     fun isIndexExist(@RequestParam indexName: String): ResponseEntity<Boolean> {
         val result = openSearchService.isIndexExist(indexName)
         return ResponseEntity.status(HttpStatus.OK).body(result)
+    }
+
+    @DeleteMapping
+    fun deleteIndex(@RequestParam indexName: String): ResponseEntity<Boolean> {
+        openSearchService.deleteIndex(indexName)
+        return ResponseEntity.status(HttpStatus.OK).build()
     }
 }

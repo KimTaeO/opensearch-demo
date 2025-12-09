@@ -4,6 +4,7 @@ import org.opensearch.client.opensearch.OpenSearchClient
 import org.opensearch.client.opensearch._types.mapping.IntegerNumberProperty
 import org.opensearch.client.opensearch._types.mapping.KeywordProperty
 import org.opensearch.client.opensearch._types.mapping.Property
+import org.opensearch.client.opensearch._types.mapping.TextProperty
 import org.opensearch.client.opensearch._types.mapping.TypeMapping
 import org.opensearch.client.opensearch.indices.CreateIndexRequest
 import org.opensearch.client.opensearch.indices.DeleteIndexRequest
@@ -23,11 +24,18 @@ class OpenSearchIndexService(
             .numberOfReplicas(1)
             .build()
 
+        val keywordProperty = KeywordProperty.Builder().build()
+        val integerNumberProperty = IntegerNumberProperty.Builder().build()
+
+        val keywordPropertyMap = mapOf(
+            "keyword" to Property.Builder().keyword(keywordProperty).build()
+        )
+
         val typeMapping = TypeMapping.Builder()
-            .properties("productName",  Property.Builder().keyword(KeywordProperty.Builder().build()).build())
-            .properties("ediCode",      Property.Builder().keyword(KeywordProperty.Builder().ignoreAbove(20).build()).build())
-            .properties("brandName",  Property.Builder().keyword(KeywordProperty.Builder().build()).build())
-            .properties("brandId",      Property.Builder().integer(IntegerNumberProperty.Builder().build()).build())
+            .properties("productName",  Property.Builder().text(TextProperty.Builder().fields(keywordPropertyMap).build()).build())
+            .properties("ediCode",      Property.Builder().keyword(keywordProperty).build())
+            .properties("brandName",    Property.Builder().keyword(keywordProperty).build())
+            .properties("brandId",      Property.Builder().integer(integerNumberProperty).build())
             .build()
 
 

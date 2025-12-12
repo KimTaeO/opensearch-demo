@@ -1,5 +1,6 @@
 package com.example.opensearch.controller
 
+import com.example.opensearch.dto.request.SaveOpenSearchDocumentListRequest
 import com.example.opensearch.dto.request.SaveOpensearchDocumentRequest
 import com.example.opensearch.service.OpenSearchDocumentService
 import org.opensearch.client.opensearch.core.IndexResponse
@@ -19,6 +20,12 @@ class OpenSearchDocumentController(
     @PostMapping
     fun saveDocument(@RequestParam indexName: String, @RequestBody saveOpensearchDocumentRequest: SaveOpensearchDocumentRequest): ResponseEntity<IndexResponse> {
         val result = openSearchDocumentService.saveDocument(indexName, saveOpensearchDocumentRequest)
+        return ResponseEntity.status(HttpStatus.OK).body(result)
+    }
+
+    @PostMapping("/batch")
+    fun saveDocumentBatch(@RequestParam indexName: String, @RequestBody saveOpenSearchDocumentListRequest: SaveOpenSearchDocumentListRequest): ResponseEntity<List<IndexResponse>> {
+        val result = openSearchDocumentService.saveDocumentBatch(indexName, saveOpenSearchDocumentListRequest)
         return ResponseEntity.status(HttpStatus.OK).body(result)
     }
 }

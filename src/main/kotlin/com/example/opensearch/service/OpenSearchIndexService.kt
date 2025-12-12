@@ -1,6 +1,7 @@
 package com.example.opensearch.service
 
 import org.opensearch.client.opensearch.OpenSearchClient
+import org.opensearch.client.opensearch._types.analysis.Analyzer
 import org.opensearch.client.opensearch._types.mapping.IntegerNumberProperty
 import org.opensearch.client.opensearch._types.mapping.KeywordProperty
 import org.opensearch.client.opensearch._types.mapping.Property
@@ -10,6 +11,7 @@ import org.opensearch.client.opensearch.indices.CreateIndexRequest
 import org.opensearch.client.opensearch.indices.DeleteIndexRequest
 import org.opensearch.client.opensearch.indices.ExistsRequest
 import org.opensearch.client.opensearch.indices.IndexSettings
+import org.opensearch.client.opensearch.indices.IndexSettingsAnalysis
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,20 +24,52 @@ class OpenSearchIndexService(
         val indexSetting = IndexSettings.Builder()
             .numberOfShards(1)
             .numberOfReplicas(1)
+            .analysis(
+                IndexSettingsAnalysis.Builder()
+                    .analyzer("ko_text") { a ->
+                        a.standard { a -> a }
+                    }
+                    .build()
+            )
             .build()
 
         val keywordProperty = KeywordProperty.Builder().build()
+
         val integerNumberProperty = IntegerNumberProperty.Builder().build()
 
-        val keywordPropertyMap = mapOf(
-            "keyword" to Property.Builder().keyword(keywordProperty).build()
-        )
+        val keywordIgnoreAboveProperty =
+            Property.Builder()
+                .keyword(
+                    KeywordProperty.Builder()
+                        .ignoreAbove(256)
+                        .build()
+                )
+                .build()
+
 
         val typeMapping = TypeMapping.Builder()
-            .properties("productName",  Property.Builder().text(TextProperty.Builder().fields(keywordPropertyMap).build()).build())
+            .properties("productName", Property.Builder()
+                .text(
+                    TextProperty.Builder()
+                        .analyzer("ko_text")
+                        .fields("keyword", keywordIgnoreAboveProperty)
+                        .build()
+                )
+                .build()
+            )
+            .properties("atc", Property.Builder()
+                .text(
+                    TextProperty.Builder()
+                        .analyzer("ko_text")
+                        .fields("keyword", keywordIgnoreAboveProperty)
+                        .build()
+                )
+                .build()
+            )
             .properties("ediCode",      Property.Builder().keyword(keywordProperty).build())
             .properties("brandName",    Property.Builder().keyword(keywordProperty).build())
             .properties("brandId",      Property.Builder().integer(integerNumberProperty).build())
+            .properties("productId",    Property.Builder().integer(integerNumberProperty).build())
             .build()
 
 

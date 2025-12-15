@@ -57,7 +57,7 @@ class OpenSearchIndexService(
                 )
                 .build()
             )
-            .properties("atc", Property.Builder()
+            .properties("atcCode", Property.Builder()
                 .text(
                     TextProperty.Builder()
                         .analyzer("ko_text")

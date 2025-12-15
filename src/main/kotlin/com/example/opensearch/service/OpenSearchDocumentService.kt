@@ -17,8 +17,10 @@ class OpenSearchDocumentService(
         val product = Product(
             productName = saveOpensearchDocumentRequest.productName,
             ediCode = saveOpensearchDocumentRequest.ediCode,
+            atcCode = saveOpensearchDocumentRequest.atcCode,
             brandName = saveOpensearchDocumentRequest.brandName,
-            brandId = saveOpensearchDocumentRequest.brandId
+            brandId = saveOpensearchDocumentRequest.brandId,
+            productId = saveOpensearchDocumentRequest.productId
         )
 
         val req = IndexRequest.Builder<Product>()
@@ -41,8 +43,10 @@ class OpenSearchDocumentService(
             val product = Product(
                 productName = saveOpensearchDocumentRequest.productName,
                 ediCode = saveOpensearchDocumentRequest.ediCode,
+                atcCode = saveOpensearchDocumentRequest.atcCode,
                 brandName = saveOpensearchDocumentRequest.brandName,
-                brandId = saveOpensearchDocumentRequest.brandId
+                brandId = saveOpensearchDocumentRequest.brandId,
+                productId = saveOpensearchDocumentRequest.productId
             )
 
             val req = IndexRequest.Builder<Product>()
